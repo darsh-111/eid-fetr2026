@@ -1,8 +1,28 @@
 import { useState, useRef, useMemo, useCallback } from 'react'
 import { toPng } from 'dom-to-image-more'
+import { FFmpeg } from '@ffmpeg/ffmpeg'
+import { toBlobURL } from '@ffmpeg/util'
 import { GiSheep } from 'react-icons/gi'
 import { FiSun, FiMoon, FiDownload, FiEdit3, FiSend, FiVolume2, FiVolumeX } from 'react-icons/fi'
 import './App.css'
+
+let ffmpegInstance: FFmpeg | null = null
+let ffmpegReady = false
+
+async function ensureFFmpeg() {
+  if (!ffmpegInstance) {
+    ffmpegInstance = new FFmpeg()
+  }
+  if (!ffmpegReady) {
+    const base = '/@ffmpeg/core'
+    await ffmpegInstance.load({
+      coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, 'text/javascript'),
+      wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, 'application/wasm'),
+    })
+    ffmpegReady = true
+  }
+  return ffmpegInstance!
+}
 
 function seededRandom(seed: number) {
   let s = seed
@@ -17,6 +37,7 @@ function App() {
   const [photo, setPhoto] = useState<string | null>(null)
   const [showCard, setShowCard] = useState(false)
   const [takbeerOn, setTakbeerOn] = useState(false)
+  const [creatingVideo, setCreatingVideo] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
@@ -75,34 +96,70 @@ function App() {
     setShowCard(false)
   }
 
-  const shareImage = async () => {
+  const shareVideo = async () => {
     if (!cardRef.current) return
-    const dataUrl = await toPng(cardRef.current, {
-      quality: 1,
-      width: cardRef.current.scrollWidth,
-      height: cardRef.current.scrollHeight,
-    })
-    const blob = await (await fetch(dataUrl)).blob()
-    const file = new File([blob], 'Eid-Ala-Habaybek.png', { type: 'image/png' })
-    const takbeerLink = 'https://archive.org/details/EidTakbirBySheikhAliMullah'
-    const shareText = `✨ عيد فطر مبارك ✨\n\nكل عام وأنتم بخير 🎵\n\nللاستماع إلى التكبيرات:\n${takbeerLink}`
-
-    if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      await navigator.share({
-        title: 'عيد فطر مبارك',
-        text: shareText,
-        files: [file],
+    setCreatingVideo(true)
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        quality: 1,
+        width: cardRef.current.scrollWidth,
+        height: cardRef.current.scrollHeight,
       })
-    } else if (navigator.share) {
-      await navigator.share({
-        title: 'عيد فطر مبارك',
-        text: shareText,
+      const pngBlob = await (await fetch(dataUrl)).blob()
+      const ff = await ensureFFmpeg()
+      await ff.writeFile('input.png', new Uint8Array(await pngBlob.arrayBuffer()))
+      const audioRes = await fetch('https://archive.org/download/EidTakbirBySheikhAliMullah/EidTakbirBySheikhAliMullah.mp3')
+      await ff.writeFile('audio.mp3', new Uint8Array(await audioRes.arrayBuffer()))
+      await ff.exec([
+        '-loop', '1',
+        '-i', 'input.png',
+        '-i', 'audio.mp3',
+        '-c:v', 'libx264',
+        '-tune', 'stillimage',
+        '-c:a', 'aac',
+        '-b:a', '128k',
+        '-shortest',
+        '-pix_fmt', 'yuv420p',
+        '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
+        'output.mp4',
+      ])
+      const data = await ff.readFile('output.mp4')
+      const raw = data as Uint8Array
+      const videoFile = new File([raw.buffer as ArrayBuffer], 'Eid-Ala-Habaybek.mp4', { type: 'video/mp4' })
+      if (navigator.share && navigator.canShare?.({ files: [videoFile] })) {
+        await navigator.share({
+          title: 'عيد فطر مبارك',
+          files: [videoFile],
+        })
+      } else {
+        const url = URL.createObjectURL(new Blob([raw.buffer as ArrayBuffer], { type: 'video/mp4' }))
+        const link = document.createElement('a')
+        link.download = 'Eid-Ala-Habaybek.mp4'
+        link.href = url
+        link.click()
+        URL.revokeObjectURL(url)
+      }
+    } catch {
+      const dataUrl = await toPng(cardRef.current, {
+        quality: 1,
+        width: cardRef.current.scrollWidth,
+        height: cardRef.current.scrollHeight,
       })
-    } else {
-      const link = document.createElement('a')
-      link.download = 'Eid-Ala-Habaybek.png'
-      link.href = dataUrl
-      link.click()
+      const blob = await (await fetch(dataUrl)).blob()
+      const file = new File([blob], 'Eid-Ala-Habaybek.png', { type: 'image/png' })
+      const shareText = '✨ عيد فطر مبارك ✨\n\nكل عام وأنتم بخير 🎵\n\nللاستماع إلى التكبيرات:\nhttps://archive.org/details/EidTakbirBySheikhAliMullah'
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ title: 'عيد فطر مبارك', text: shareText, files: [file] })
+      } else if (navigator.share) {
+        await navigator.share({ title: 'عيد فطر مبارك', text: shareText })
+      } else {
+        const link = document.createElement('a')
+        link.download = 'Eid-Ala-Habaybek.png'
+        link.href = dataUrl
+        link.click()
+      }
+    } finally {
+      setCreatingVideo(false)
     }
   }
 
@@ -260,8 +317,8 @@ function App() {
           {takbeerOn ? <FiVolume2 /> : <FiVolumeX />}
           التكبيرات
         </button>
-        <button className="action-btn share-btn" onClick={shareImage}>
-          <FiSend /> معايدة
+        <button className="action-btn share-btn" onClick={shareVideo} disabled={creatingVideo}>
+          <FiSend className={creatingVideo ? 'spinner' : ''} /> {creatingVideo ? 'جاري التجهيز...' : 'معايدة'}
         </button>
         <button className="action-btn png-btn" onClick={downloadPNG}>
           <FiDownload /> تحميل الصورة
