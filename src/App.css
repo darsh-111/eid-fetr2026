@@ -379,15 +379,16 @@
   font-size: 16px;
   font-weight: 400;
   color: rgba(240, 208, 96, 0.5);
-  line-height: 2.2;
-  letter-spacing: 1px;
+  line-height: 2.6;
+  letter-spacing: 0.5px;
+  padding: 4px 0;
 }
 
 .main-title {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin: 0 0 20px;
+  margin: 0 0 24px;
   position: relative;
   z-index: 1;
 }
@@ -423,7 +424,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   position: relative;
   z-index: 1;
 }
@@ -445,9 +446,9 @@
   font-family: var(--decorative);
   font-size: 22px;
   font-weight: 600;
-  line-height: 2.2;
+  line-height: 2.4;
   color: var(--text-light);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   text-shadow: 0 0 20px rgba(245, 240, 232, 0.05);
   position: relative;
   z-index: 1;
@@ -457,8 +458,8 @@
   background: var(--dua-bg);
   border: 1px solid rgba(var(--dua-border-rgb), 0.15);
   border-radius: 16px;
-  padding: 24px 20px;
-  margin-bottom: 24px;
+  padding: 28px 24px;
+  margin-bottom: 28px;
   position: relative;
   z-index: 1;
 }
@@ -467,11 +468,11 @@
   font-family: var(--decorative);
   font-size: 19px;
   color: rgba(var(--gold-rgb), 0.7);
-  line-height: 2;
+  line-height: 2.2;
 }
 
 .dua p:first-child {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .bottom-ornament {
@@ -479,6 +480,7 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
+  padding-top: 8px;
   position: relative;
   z-index: 1;
 }
