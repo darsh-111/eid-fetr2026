@@ -1,0 +1,133 @@
+:root {
+  --gold: #D4AF37;
+  --gold-light: #F5D742;
+  --gold-dark: #B8860B;
+  --amber: #E8A317;
+  --bg-start: #0D0D2B;
+  --bg-mid: #1A1040;
+  --bg-end: #0F1F3D;
+  --text-light: #F5F0E8;
+  --text-gold: #F5D742;
+  --green: #1B7A3D;
+  --green-light: #2ECC71;
+  --green-dark: #0D5C2D;
+  --teal: #0D8B7A;
+  --crescent: #F5F0E8;
+  --sans: 'Readex Pro', 'Noto Naskh Arabic', 'Traditional Arabic', system-ui, sans-serif;
+  --decorative: 'Amiri', 'Scheherazade New', 'Traditional Arabic', serif;
+  --title: 'Amiri', 'Scheherazade New', serif;
+
+  font: 20px/1.8 var(--sans);
+  color-scheme: dark;
+  color: var(--text-light);
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(145deg, var(--bg-start) 0%, var(--bg-mid) 30%, var(--bg-end) 60%, #0A0A1A 100%);
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(circle at 15% 40%, rgba(212, 175, 55, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 85% 60%, rgba(46, 204, 113, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 50% 15%, rgba(232, 163, 23, 0.04) 0%, transparent 35%),
+    radial-gradient(circle at 30% 80%, rgba(13, 139, 122, 0.03) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  text-align: center;
+  border: none;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 24px;
+}
+
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  background: var(--gold-light);
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.pattern-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(212, 175, 55, 0.02) 40px, rgba(212, 175, 55, 0.02) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(212, 175, 55, 0.02) 40px, rgba(212, 175, 55, 0.02) 41px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lantern {
+  position: fixed;
+  font-size: 60px;
+  opacity: 0.12;
+  animation: sway 4s ease-in-out infinite;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 10px rgba(245, 215, 66, 0.15));
+}
+
+.lantern svg {
+  width: 1em;
+  height: 1em;
+}
+
+.lantern:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; }
+.lantern:nth-child(2) { top: 5%; right: 5%; animation-delay: 1s; }
+.lantern:nth-child(3) { bottom: 10%; left: 8%; animation-delay: 2s; }
+.lantern:nth-child(4) { bottom: 10%; right: 8%; animation-delay: 0.5s; }
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
