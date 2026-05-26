@@ -75,14 +75,15 @@ function App() {
   async function captureBlob(): Promise<Blob> {
     const node = cardRef.current!
     try {
-      const timeout = new Promise<string>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-      const svg = await Promise.race([toSvg(node, { skipFonts: true }), timeout])
-      const inner = svg.replace(/[\s\S]*?<foreignObject[^>]*>/i, '').replace(/<\/foreignObject>[\s\S]*/i, '')
-      const w = parseFloat(/width="([\d.]+)"/.exec(svg)?.[1] || '800')
-      const h = parseFloat(/height="([\d.]+)"/.exec(svg)?.[1] || '600')
+      const timeout = new Promise<string>((_, reject) => setTimeout(() => reject(new Error('timeout')), 7000))
+      const dataUri = await Promise.race([toSvg(node, { skipFonts: true }), timeout])
+      const raw = decodeURIComponent(dataUri.split(',')[1])
+      const inner = raw.replace(/[\s\S]*?<foreignObject[^>]*>/i, '').replace(/<\/foreignObject>[\s\S]*/i, '')
+      const w = parseFloat(/width="([\d.]+)"/.exec(raw)?.[1] || '800')
+      const h = parseFloat(/height="([\d.]+)"/.exec(raw)?.[1] || '600')
       const scale = 3
-      const scaledSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w * scale}" height="${h * scale}"><g transform="scale(${scale})"><foreignObject width="${w}" height="${h}">${inner}</foreignObject></g></svg>`
-      const blob = new Blob([scaledSvg], { type: 'image/svg+xml;charset=utf-8' })
+      const scaled = `<svg xmlns="http://www.w3.org/2000/svg" width="${w * scale}" height="${h * scale}"><g transform="scale(${scale})"><foreignObject width="${w}" height="${h}">${inner}</foreignObject></g></svg>`
+      const blob = new Blob([scaled], { type: 'image/svg+xml;charset=utf-8' })
       const url = URL.createObjectURL(blob)
       return await new Promise<Blob>((resolve, reject) => {
         const img = new Image()
@@ -98,7 +99,8 @@ function App() {
         img.src = url
       })
     } catch {
-      const blob = await toBlob(node, { pixelRatio: 3 })
+      const fallbackTimeout = new Promise<Blob>((_, reject) => setTimeout(() => reject(new Error('timeout')), 7000))
+      const blob = await Promise.race([toBlob(node, { pixelRatio: 3 }), fallbackTimeout])
       if (!blob) throw new Error('toBlob failed')
       return blob
     }
