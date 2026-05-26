@@ -76,39 +76,47 @@ function App() {
     const node = cardRef.current!
     const scale = 4
 
-    const svgDataUrl = await domtoimage.toSvg(node, {
-      style: {
-        transform: `scale(${scale})`,
-        transformOrigin: 'top left',
-      },
-    })
+    try {
+      const svgDataUrl = await domtoimage.toSvg(node, {
+        style: {
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+        },
+      })
 
-    const raw = decodeURIComponent(svgDataUrl.split(',')[1])
-    const scaled = raw
-      .replace(
-        /(<svg[^>]*?)(width|height)="(\d+)"/g,
-        (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
-      )
-      .replace(
-        /(<foreignObject[^>]*?)(width|height)="(\d+)"/g,
-        (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
-      )
-    const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(scaled)
+      const raw = decodeURIComponent(svgDataUrl.split(',')[1])
+      const scaled = raw
+        .replace(
+          /(<svg[^>]*?)(width|height)="(\d+)"/g,
+          (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
+        )
+        .replace(
+          /(<foreignObject[^>]*?)(width|height)="(\d+)"/g,
+          (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
+        )
+      const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(scaled)
 
-    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-      const img = new Image()
-      img.onload = () => resolve(img)
-      img.onerror = reject
-      img.src = dataUrl
-    })
+      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve(img)
+        img.onerror = reject
+        img.src = dataUrl
+      })
 
-    const canvas = document.createElement('canvas')
-    canvas.width = img.naturalWidth
-    canvas.height = img.naturalHeight
-    const ctx = canvas.getContext('2d')!
-    ctx.drawImage(img, 0, 0)
+      const canvas = document.createElement('canvas')
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
 
-    return new Promise<Blob>(r => canvas.toBlob(b => r(b!), 'image/png'))
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob returned null')), 'image/png')
+      })
+      return blob
+    } catch (err) {
+      console.error('SVG capture failed, falling back to toPng', err)
+      return domtoimage.toBlob(node, { quality: 1, pixelRatio: 3 })
+    }
   }
 
   const downloadPNG = async () => {
@@ -125,8 +133,14 @@ function App() {
   const shareCard = async () => {
     if (!cardRef.current) return
     setCreatingVideo(true)
+    let blob: Blob | null = null
     try {
-      const blob = await captureBlob()
+      blob = await captureBlob()
+    } catch {
+      setCreatingVideo(false)
+      return
+    }
+    try {
       const file = new File([blob], 'Eid-Ala-Habaybek.png', { type: 'image/png' })
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({
@@ -148,7 +162,6 @@ function App() {
         URL.revokeObjectURL(url)
       }
     } catch {
-      const blob = await captureBlob()
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.download = 'Eid-Ala-Habaybek.png'
