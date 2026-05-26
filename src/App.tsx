@@ -74,34 +74,31 @@ function App() {
 
   async function captureBlob(): Promise<Blob> {
     const node = cardRef.current!
-    // Try high-quality SVG manipulation first
     try {
       const svgDataUri = await domtoimage.toSvg(node)
       const raw = decodeURIComponent(svgDataUri.split(',')[1])
       const scale = 3
-      const scaled = raw
-        .replace(/(width|height)="([\d.]+)"/gi, (_, a, v) => `${a}="${parseFloat(v) * scale}"`)
-        .replace(/<foreignObject/gi, '<g transform="scale(' + scale + ')" xmlns="http://www.w3.org/2000/svg"><foreignObject')
-        .replace(/<\/foreignObject>/gi, '</foreignObject></g>')
-      const blob = new Blob([scaled], { type: 'image/svg+xml;charset=utf-8' })
-      const url = URL.createObjectURL(blob)
+      const inner = raw.replace(/<svg[^>]*>/i, '').replace(/<\/svg>/i, '')
+        .replace(/<foreignObject[^>]*>/i, '').replace(/<\/foreignObject>/i, '')
+      const rect = node.getBoundingClientRect()
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${rect.width * scale}" height="${rect.height * scale}"><g transform="scale(${scale})"><foreignObject width="${rect.width}" height="${rect.height}">${inner}</foreignObject></g></svg>`
+      const b = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' })
+      const url = URL.createObjectURL(b)
       return await new Promise((resolve, reject) => {
         const img = new Image()
         img.onload = () => {
           const canvas = document.createElement('canvas')
           canvas.width = img.naturalWidth
           canvas.height = img.naturalHeight
-          const ctx = canvas.getContext('2d')!
-          ctx.drawImage(img, 0, 0)
+          canvas.getContext('2d')!.drawImage(img, 0, 0)
           URL.revokeObjectURL(url)
-          canvas.toBlob(b => b ? resolve(b) : reject(), 'image/png')
+          canvas.toBlob(b2 => b2 ? resolve(b2) : reject(), 'image/png')
         }
         img.onerror = () => { URL.revokeObjectURL(url); reject() }
         img.src = url
       })
     } catch {
-      // Fallback
-      return domtoimage.toBlob(node, { pixelRatio: 2 })
+      return domtoimage.toBlob(node, { pixelRatio: 3 })
     }
   }
 
