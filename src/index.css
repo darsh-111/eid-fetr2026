@@ -15,7 +15,23 @@
   --green-dark: #0D5C2D;
   --green-rgb: 46, 204, 113;
   --teal: #0D8B7A;
+  --teal-rgb: 13, 139, 122;
   --crescent: #F5F0E8;
+  --card-bg: linear-gradient(145deg,
+      rgba(13, 13, 43, 0.92) 0%,
+      rgba(26, 16, 64, 0.88) 40%,
+      rgba(15, 31, 61, 0.9) 100%);
+  --glow-primary-rgb: 212, 175, 55;
+  --glow-secondary-rgb: 46, 204, 113;
+  --bg-glow-1-rgb: 212, 175, 55;
+  --bg-glow-2-rgb: 46, 204, 113;
+  --bg-glow-3-rgb: 232, 163, 23;
+  --bg-glow-4-rgb: 13, 139, 122;
+  --pattern-rgb: 212, 175, 55;
+  --lantern-rgb: 245, 215, 66;
+  --star-rgb: 245, 215, 66;
+  --dua-bg: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(46, 204, 113, 0.06), rgba(13, 139, 122, 0.04));
+  --dua-border-rgb: 212, 175, 55;
   --sans: 'Readex Pro', 'Noto Naskh Arabic', 'Traditional Arabic', system-ui, sans-serif;
   --decorative: 'Amiri', 'Scheherazade New', 'Traditional Arabic', serif;
   --title: 'Amiri', 'Scheherazade New', serif;
@@ -48,7 +64,23 @@
   --green-dark: #1A9C54;
   --green-rgb: 46, 204, 113;
   --teal: #1ABC9C;
+  --teal-rgb: 26, 188, 156;
   --text-gold: #58D68D;
+  --card-bg: linear-gradient(145deg,
+      rgba(10, 26, 15, 0.92) 0%,
+      rgba(15, 45, 26, 0.88) 40%,
+      rgba(8, 31, 18, 0.9) 100%);
+  --glow-primary-rgb: 46, 204, 113;
+  --glow-secondary-rgb: 26, 188, 156;
+  --bg-glow-1-rgb: 46, 204, 113;
+  --bg-glow-2-rgb: 26, 188, 156;
+  --bg-glow-3-rgb: 39, 174, 96;
+  --bg-glow-4-rgb: 46, 204, 113;
+  --pattern-rgb: 46, 204, 113;
+  --lantern-rgb: 88, 214, 141;
+  --star-rgb: 88, 214, 141;
+  --dua-bg: linear-gradient(135deg, rgba(46, 204, 113, 0.06), rgba(26, 188, 156, 0.06), rgba(39, 174, 96, 0.04));
+  --dua-border-rgb: 46, 204, 113;
 }
 .theme-ruby {
   --gold: #E74C3C;
@@ -65,7 +97,23 @@
   --green-dark: #D35400;
   --green-rgb: 230, 126, 34;
   --teal: #E74C3C;
+  --teal-rgb: 231, 76, 60;
   --text-gold: #FF6B6B;
+  --card-bg: linear-gradient(145deg,
+      rgba(26, 5, 5, 0.92) 0%,
+      rgba(45, 10, 15, 0.88) 40%,
+      rgba(26, 8, 21, 0.9) 100%);
+  --glow-primary-rgb: 231, 76, 60;
+  --glow-secondary-rgb: 243, 156, 18;
+  --bg-glow-1-rgb: 231, 76, 60;
+  --bg-glow-2-rgb: 243, 156, 18;
+  --bg-glow-3-rgb: 230, 126, 34;
+  --bg-glow-4-rgb: 231, 76, 60;
+  --pattern-rgb: 255, 107, 107;
+  --lantern-rgb: 255, 107, 107;
+  --star-rgb: 255, 107, 107;
+  --dua-bg: linear-gradient(135deg, rgba(231, 76, 60, 0.06), rgba(243, 156, 18, 0.06), rgba(230, 126, 34, 0.04));
+  --dua-border-rgb: 231, 76, 60;
 }
 .theme-indigo {
   --gold: #6C63FF;
@@ -82,7 +130,23 @@
   --green-dark: #4A42CC;
   --green-rgb: 108, 99, 255;
   --teal: #9B59B6;
+  --teal-rgb: 155, 89, 182;
   --text-gold: #8B83FF;
+  --card-bg: linear-gradient(145deg,
+      rgba(8, 8, 42, 0.92) 0%,
+      rgba(16, 16, 64, 0.88) 40%,
+      rgba(8, 8, 48, 0.9) 100%);
+  --glow-primary-rgb: 108, 99, 255;
+  --glow-secondary-rgb: 155, 89, 182;
+  --bg-glow-1-rgb: 108, 99, 255;
+  --bg-glow-2-rgb: 155, 89, 182;
+  --bg-glow-3-rgb: 139, 131, 255;
+  --bg-glow-4-rgb: 108, 99, 255;
+  --pattern-rgb: 139, 131, 255;
+  --lantern-rgb: 139, 131, 255;
+  --star-rgb: 139, 131, 255;
+  --dua-bg: linear-gradient(135deg, rgba(108, 99, 255, 0.06), rgba(155, 89, 182, 0.06), rgba(139, 131, 255, 0.04));
+  --dua-border-rgb: 108, 99, 255;
 }
 .theme-rose {
   --gold: #E91E63;
@@ -99,7 +163,23 @@
   --green-dark: #C2185B;
   --green-rgb: 233, 30, 99;
   --teal: #FFB6C1;
+  --teal-rgb: 255, 182, 193;
   --text-gold: #FF6B9D;
+  --card-bg: linear-gradient(145deg,
+      rgba(26, 5, 16, 0.92) 0%,
+      rgba(45, 10, 26, 0.88) 40%,
+      rgba(26, 8, 32, 0.9) 100%);
+  --glow-primary-rgb: 233, 30, 99;
+  --glow-secondary-rgb: 255, 182, 193;
+  --bg-glow-1-rgb: 233, 30, 99;
+  --bg-glow-2-rgb: 255, 182, 193;
+  --bg-glow-3-rgb: 255, 107, 157;
+  --bg-glow-4-rgb: 233, 30, 99;
+  --pattern-rgb: 255, 107, 157;
+  --lantern-rgb: 255, 107, 157;
+  --star-rgb: 255, 107, 157;
+  --dua-bg: linear-gradient(135deg, rgba(233, 30, 99, 0.06), rgba(255, 182, 193, 0.06), rgba(255, 107, 157, 0.04));
+  --dua-border-rgb: 233, 30, 99;
 }
 .theme-day {
   --gold: #F39C12;
@@ -116,7 +196,23 @@
   --green-dark: #1A9C54;
   --green-rgb: 46, 204, 113;
   --teal: #1ABC9C;
+  --teal-rgb: 26, 188, 156;
   --text-gold: #F1C40F;
+  --card-bg: linear-gradient(145deg,
+      rgba(26, 15, 5, 0.92) 0%,
+      rgba(45, 26, 10, 0.88) 40%,
+      rgba(26, 18, 8, 0.9) 100%);
+  --glow-primary-rgb: 243, 156, 18;
+  --glow-secondary-rgb: 46, 204, 113;
+  --bg-glow-1-rgb: 243, 156, 18;
+  --bg-glow-2-rgb: 46, 204, 113;
+  --bg-glow-3-rgb: 230, 126, 34;
+  --bg-glow-4-rgb: 26, 188, 156;
+  --pattern-rgb: 241, 196, 15;
+  --lantern-rgb: 241, 196, 15;
+  --star-rgb: 241, 196, 15;
+  --dua-bg: linear-gradient(135deg, rgba(243, 156, 18, 0.06), rgba(46, 204, 113, 0.06), rgba(26, 188, 156, 0.04));
+  --dua-border-rgb: 243, 156, 18;
 }
 
 /* ========== Card Styles ========== */
@@ -158,10 +254,7 @@
   display: none;
 }
 .style-minimal .container {
-  background: linear-gradient(145deg,
-    rgba(13, 13, 43, 0.95) 0%,
-    rgba(26, 16, 64, 0.9) 100%
-  );
+  background: var(--card-bg);
   border-radius: 16px;
 }
 .style-minimal .title-line.accent {
@@ -236,10 +329,10 @@ body::before {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   background:
-    radial-gradient(circle at 15% 40%, rgba(212, 175, 55, 0.06) 0%, transparent 45%),
-    radial-gradient(circle at 85% 60%, rgba(46, 204, 113, 0.04) 0%, transparent 45%),
-    radial-gradient(circle at 50% 15%, rgba(232, 163, 23, 0.04) 0%, transparent 35%),
-    radial-gradient(circle at 30% 80%, rgba(13, 139, 122, 0.03) 0%, transparent 40%);
+    radial-gradient(circle at 15% 40%, rgba(var(--bg-glow-1-rgb), 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 85% 60%, rgba(var(--bg-glow-2-rgb), 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 50% 15%, rgba(var(--bg-glow-3-rgb), 0.04) 0%, transparent 35%),
+    radial-gradient(circle at 30% 80%, rgba(var(--bg-glow-4-rgb), 0.03) 0%, transparent 40%);
   pointer-events: none;
   z-index: 0;
 }
@@ -273,7 +366,7 @@ body::before {
 
 .star {
   position: absolute;
-  background: var(--gold-light);
+  background: rgba(var(--star-rgb), 1);
   border-radius: 50%;
   animation: twinkle 2s ease-in-out infinite;
 }
@@ -287,8 +380,8 @@ body::before {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(212, 175, 55, 0.02) 40px, rgba(212, 175, 55, 0.02) 41px),
-    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(212, 175, 55, 0.02) 40px, rgba(212, 175, 55, 0.02) 41px);
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(var(--pattern-rgb), 0.02) 40px, rgba(var(--pattern-rgb), 0.02) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(var(--pattern-rgb), 0.02) 40px, rgba(var(--pattern-rgb), 0.02) 41px);
   pointer-events: none;
   z-index: 0;
 }
@@ -302,8 +395,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--gold-light);
-  filter: drop-shadow(0 0 10px rgba(245, 215, 66, 0.15));
+  color: rgba(var(--lantern-rgb), 1);
+  filter: drop-shadow(0 0 10px rgba(var(--lantern-rgb), 0.15));
 }
 
 .lantern svg {
