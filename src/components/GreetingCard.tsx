@@ -55,7 +55,7 @@ const GreetingCard = forwardRef<HTMLDivElement, Props>(({ photo, name, style }, 
 
     <div className="dua">
       <p>تقبل الله منا ومنكم صالح الأعمال والأضاحي</p>
-      <p>اللهم اجعل هذا العيد عيد خير وبركة ونصر للأمة الإسلامية</p>
+      <p>لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ</p>
     </div>
 
     <div className="bottom-ornament">
