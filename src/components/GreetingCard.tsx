@@ -38,7 +38,7 @@ const GreetingCard = forwardRef<HTMLDivElement, Props>(({ photo, name, style }, 
     </div>
 
     <div className="takbeer-wrap">
-      <p className="takbeer">الله أكبر الله أكبر لا إله إلا الله والله أكبر الله أكبر ولله الحمد</p>
+      <p className="takbeer">الله أكبر الله أكبر الله أكبر لا إله إلا الله والله أكبر الله أكبر ولله الحمد</p>
     </div>
 
     <h1 className="main-title">

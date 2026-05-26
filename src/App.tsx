@@ -75,7 +75,8 @@ function App() {
   async function captureBlob(): Promise<Blob> {
     const node = cardRef.current!
     try {
-      const svgDataUri = await domtoimage.toSvg(node)
+      const timeout = new Promise<string>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+      const svgDataUri = await Promise.race([domtoimage.toSvg(node), timeout])
       const raw = decodeURIComponent(svgDataUri.split(',')[1])
       const scale = 3
       const inner = raw.replace(/<svg[^>]*>/i, '').replace(/<\/svg>/i, '')
@@ -136,21 +137,9 @@ function App() {
           title: 'عيد أضحى مبارك',
           text: 'تقبل الله منا ومنكم صالح الأعمال',
         })
-      } else {
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.download = 'Eid-Ala-Habaybek.png'
-        link.href = url
-        link.click()
-        URL.revokeObjectURL(url)
       }
     } catch {
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.download = 'Eid-Ala-Habaybek.png'
-      link.href = url
-      link.click()
-      URL.revokeObjectURL(url)
+      // share cancelled or failed — do nothing
     } finally {
       setCreatingVideo(false)
     }
