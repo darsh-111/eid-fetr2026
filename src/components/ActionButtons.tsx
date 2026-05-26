@@ -20,7 +20,7 @@ export default function ActionButtons({
         التكبيرات
       </button>
       <button className="action-btn share-btn" onClick={onShare} disabled={creatingVideo}>
-        <FiSend className={creatingVideo ? 'spinner' : ''} /> {creatingVideo ? 'جاري التجهيز...' : 'معايدة'}
+        <FiSend className={creatingVideo ? 'spinner' : ''} /> {creatingVideo ? 'جاري...' : 'معايدة'}
       </button>
       <button className="action-btn png-btn" onClick={onDownload}>
         <FiDownload /> تحميل الصورة
