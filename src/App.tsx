@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import domtoimage from 'dom-to-image-more'
+import { toSvg, toBlob } from 'html-to-image'
 import { themes } from './constants'
 import StarsBackground from './components/StarsBackground'
 import SetupForm from './components/SetupForm'
@@ -76,16 +76,15 @@ function App() {
     const node = cardRef.current!
     try {
       const timeout = new Promise<string>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-      const svgDataUri = await Promise.race([domtoimage.toSvg(node), timeout])
-      const raw = decodeURIComponent(svgDataUri.split(',')[1])
+      const svg = await Promise.race([toSvg(node, { skipFonts: true }), timeout])
+      const inner = svg.replace(/[\s\S]*?<foreignObject[^>]*>/i, '').replace(/<\/foreignObject>[\s\S]*/i, '')
+      const w = parseFloat(/width="([\d.]+)"/.exec(svg)?.[1] || '800')
+      const h = parseFloat(/height="([\d.]+)"/.exec(svg)?.[1] || '600')
       const scale = 3
-      const inner = raw.replace(/<svg[^>]*>/i, '').replace(/<\/svg>/i, '')
-        .replace(/<foreignObject[^>]*>/i, '').replace(/<\/foreignObject>/i, '')
-      const rect = node.getBoundingClientRect()
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${rect.width * scale}" height="${rect.height * scale}"><g transform="scale(${scale})"><foreignObject width="${rect.width}" height="${rect.height}">${inner}</foreignObject></g></svg>`
-      const b = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' })
-      const url = URL.createObjectURL(b)
-      return await new Promise((resolve, reject) => {
+      const scaledSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w * scale}" height="${h * scale}"><g transform="scale(${scale})"><foreignObject width="${w}" height="${h}">${inner}</foreignObject></g></svg>`
+      const blob = new Blob([scaledSvg], { type: 'image/svg+xml;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      return await new Promise<Blob>((resolve, reject) => {
         const img = new Image()
         img.onload = () => {
           const canvas = document.createElement('canvas')
@@ -93,13 +92,15 @@ function App() {
           canvas.height = img.naturalHeight
           canvas.getContext('2d')!.drawImage(img, 0, 0)
           URL.revokeObjectURL(url)
-          canvas.toBlob(b2 => b2 ? resolve(b2) : reject(), 'image/png')
+          canvas.toBlob(b => b ? resolve(b) : reject(), 'image/png')
         }
         img.onerror = () => { URL.revokeObjectURL(url); reject() }
         img.src = url
       })
     } catch {
-      return domtoimage.toBlob(node, { pixelRatio: 3 })
+      const blob = await toBlob(node, { pixelRatio: 3 })
+      if (!blob) throw new Error('toBlob failed')
+      return blob
     }
   }
 
