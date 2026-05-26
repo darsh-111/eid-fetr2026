@@ -73,7 +73,34 @@ function App() {
   }
 
   async function captureBlob(): Promise<Blob> {
-    return domtoimage.toBlob(cardRef.current!, { pixelRatio: 3 })
+    const node = cardRef.current!
+    const scale = 3
+    const svgTxt = await domtoimage.toSvg(node)
+    // Scale SVG viewport and wrap foreignObject in <g transform="scale(N)">
+    const scaled = svgTxt
+      .replace(/<svg\s/gi, '<svg ')
+      .replace(
+        /(width|height)="([\d.]+)"/gi,
+        (_, a, v) => `${a}="${parseFloat(v) * scale}"`
+      )
+      .replace(/<foreignObject/gi, '<g transform="scale(' + scale + ')" xmlns="http://www.w3.org/2000/svg"><foreignObject')
+      .replace(/<\/foreignObject>/gi, '</foreignObject></g>')
+    const blob = new Blob([scaled], { type: 'image/svg+xml;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.width = img.naturalWidth
+        canvas.height = img.naturalHeight
+        const ctx = canvas.getContext('2d')!
+        ctx.drawImage(img, 0, 0)
+        URL.revokeObjectURL(url)
+        canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob null')), 'image/png')
+      }
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('img load failed')) }
+      img.src = url
+    })
   }
 
   const downloadPNG = async () => {
