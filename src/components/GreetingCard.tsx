@@ -12,6 +12,8 @@ const GreetingCard = forwardRef<HTMLDivElement, Props>(({ photo, name, style }, 
   <div className={`container card-container style-${style}`} ref={ref}>
     <div className="card-glow" />
 
+    <div className="top-eid-message">عيد مبارك</div>
+
     <div className="border-ornament top-ornament">
       <span className="diamond">◆</span>
       <span className="ornament-line" />
@@ -60,7 +62,6 @@ const GreetingCard = forwardRef<HTMLDivElement, Props>(({ photo, name, style }, 
 
     <div className="bottom-ornament">
       <span className="moon"><FiMoon /></span>
-      <span className="ornament-text">عيد مبارك</span>
       <span className="moon"><FiMoon /></span>
     </div>
   </div>
