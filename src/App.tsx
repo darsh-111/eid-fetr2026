@@ -361,6 +361,32 @@ function App() {
         </div>
       </div>
 
+      <div className="card-customize">
+        <div className="card-theme-picker">
+          {themes.map((t) => (
+            <button
+              key={t.id}
+              className={`theme-swatch ${theme === t.id ? 'active' : ''}`}
+              style={{ '--swatch': t.color } as React.CSSProperties}
+              onClick={() => setTheme(t.id)}
+              title={t.label}
+            />
+          ))}
+        </div>
+        <div className="card-style-picker">
+          {styles.map((s) => (
+            <button
+              key={s.id}
+              className={`style-option ${style === s.id ? 'active' : ''}`}
+              onClick={() => setStyle(s.id)}
+            >
+              <span className="style-icon">{s.icon}</span>
+              <span className="style-label">{s.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="actions">
         <button className="action-btn takbeer-btn" onClick={toggleTakbeer}>
           {takbeerOn ? <FiVolume2 /> : <FiVolumeX />}
