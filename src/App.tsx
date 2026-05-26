@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import domtoimage from 'dom-to-image-more'
-import html2canvas from 'html2canvas'
 import { themes } from './constants'
 import StarsBackground from './components/StarsBackground'
 import SetupForm from './components/SetupForm'
@@ -74,21 +73,7 @@ function App() {
   }
 
   async function captureBlob(): Promise<Blob> {
-    const node = cardRef.current!
-    try {
-      const canvas = await html2canvas(node, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: null,
-        logging: false,
-      })
-      return new Promise((resolve, reject) => {
-        canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob null')), 'image/png')
-      })
-    } catch {
-      return domtoimage.toBlob(node, { pixelRatio: 3 })
-    }
+    return domtoimage.toBlob(cardRef.current!, { pixelRatio: 3 })
   }
 
   const downloadPNG = async () => {
