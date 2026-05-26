@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { toBlob } from 'html-to-image'
+import domtoimage from 'dom-to-image-more'
 import { themes } from './constants'
 import StarsBackground from './components/StarsBackground'
 import SetupForm from './components/SetupForm'
@@ -73,9 +73,7 @@ function App() {
   }
 
   async function captureBlob(): Promise<Blob> {
-    const blob = await toBlob(cardRef.current!, { pixelRatio: 3, skipFonts: true })
-    if (!blob) throw new Error('toBlob failed')
-    return blob
+    return domtoimage.toBlob(cardRef.current!, { pixelRatio: 3 })
   }
 
   const downloadPNG = async () => {
