@@ -40,6 +40,23 @@
   z-index: -1;
 }
 
+/* === Card Specific Container === */
+.card-container {
+  padding: 50px 40px;
+}
+
+/* === Card Inner Glow === */
+.card-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(var(--gold-rgb), 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(var(--gold-rgb), 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  border-radius: 24px;
+  z-index: 0;
+}
+
 /* === Sheep Logo === */
 .sheep-logo {
   font-size: 80px;
@@ -241,6 +258,20 @@
   font-weight: 600;
 }
 
+.suggested-badge {
+  font-size: 10px;
+  background: rgba(var(--gold-rgb), 0.2);
+  color: var(--gold-light);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.style-option.suggested {
+  border-color: rgba(var(--gold-rgb), 0.5);
+  box-shadow: 0 0 12px rgba(var(--gold-rgb), 0.1);
+}
+
 .generate-btn {
   width: 100%;
   padding: 16px;
@@ -264,6 +295,17 @@
 .generate-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.visit-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 15px;
+  color: rgba(245, 240, 232, 0.4);
+  direction: rtl;
 }
 
 .takbeer-toggle {
@@ -306,6 +348,12 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.user-photo {
+  position: relative;
 }
 
 .user-photo img {
@@ -331,7 +379,6 @@
   font-size: 16px;
   font-weight: 400;
   color: rgba(240, 208, 96, 0.5);
-  margin-bottom: 20px;
   line-height: 2.2;
   letter-spacing: 1px;
 }
@@ -341,6 +388,8 @@
   flex-direction: column;
   gap: 4px;
   margin: 0 0 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .title-line {
@@ -375,6 +424,8 @@
   justify-content: center;
   gap: 12px;
   margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .decorative-line .line {
@@ -398,6 +449,8 @@
   color: var(--text-light);
   margin-bottom: 20px;
   text-shadow: 0 0 20px rgba(245, 240, 232, 0.05);
+  position: relative;
+  z-index: 1;
 }
 
 .dua {
@@ -406,6 +459,8 @@
   border-radius: 16px;
   padding: 24px 20px;
   margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .dua p {
@@ -424,6 +479,8 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
+  position: relative;
+  z-index: 1;
 }
 
 .moon {
@@ -450,6 +507,8 @@
   justify-content: center;
   gap: 8px;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .ornament-line {
@@ -571,6 +630,14 @@
     padding: 30px 20px;
   }
 
+  .card-container {
+    padding: 12px;
+  }
+
+  .card-frame {
+    padding: 20px 16px;
+  }
+
   .form-container {
     padding: 28px 20px;
   }
@@ -604,7 +671,7 @@
   }
 
   .dua p {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .user-name {
