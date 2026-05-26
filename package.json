@@ -10,9 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ffmpeg/core": "^0.12.10",
-    "@ffmpeg/ffmpeg": "^0.12.15",
-    "@ffmpeg/util": "^0.12.2",
     "dom-to-image-more": "^3.7.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
@@ -34,7 +31,6 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12",
-    "vite-plugin-static-copy": "^4.1.0"
+    "vite": "^8.0.12"
   }
 }

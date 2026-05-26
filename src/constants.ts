@@ -1,6 +1,3 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg'
-import { toBlobURL } from '@ffmpeg/util'
-
 export const themes = [
   { id: 'gold', label: 'ذهبي', color: '#D4AF37', suggestedStyles: ['classic', 'elegant'] },
   { id: 'emerald', label: 'زمردي', color: '#58D68D', suggestedStyles: ['moroccan', 'luxury'] },
@@ -17,24 +14,6 @@ export const styles = [
   { id: 'minimal', label: 'بسيط', icon: '○' },
   { id: 'moroccan', label: 'موريكي', icon: '⭒' },
 ]
-
-let ffmpegInstance: FFmpeg | null = null
-let ffmpegReady = false
-
-export async function ensureFFmpeg() {
-  if (!ffmpegInstance) {
-    ffmpegInstance = new FFmpeg()
-  }
-  if (!ffmpegReady) {
-    const base = '/@ffmpeg/core'
-    await ffmpegInstance.load({
-      coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, 'text/javascript'),
-      wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, 'application/wasm'),
-    })
-    ffmpegReady = true
-  }
-  return ffmpegInstance!
-}
 
 export function seededRandom(seed: number) {
   let s = seed

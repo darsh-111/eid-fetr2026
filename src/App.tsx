@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { toPng } from 'dom-to-image-more'
-import { ensureFFmpeg, themes } from './constants'
+import { themes } from './constants'
 import StarsBackground from './components/StarsBackground'
 import SetupForm from './components/SetupForm'
 import GreetingCard from './components/GreetingCard'
@@ -85,7 +85,7 @@ function App() {
     link.click()
   }
 
-  const shareVideo = async () => {
+  const shareCard = async () => {
     if (!cardRef.current) return
     setCreatingVideo(true)
     try {
@@ -94,56 +94,34 @@ function App() {
         width: cardRef.current.scrollWidth,
         height: cardRef.current.scrollHeight,
       })
-      const pngBlob = await (await fetch(dataUrl)).blob()
-      const ff = await ensureFFmpeg()
-      await ff.writeFile('input.png', new Uint8Array(await pngBlob.arrayBuffer()))
-      const audioRes = await fetch('https://archive.org/download/EidTakbirBySheikhAliMullah/EidTakbirBySheikhAliMullah.mp3')
-      await ff.writeFile('audio.mp3', new Uint8Array(await audioRes.arrayBuffer()))
-      await ff.exec([
-        '-loop', '1',
-        '-i', 'input.png',
-        '-i', 'audio.mp3',
-        '-c:v', 'libx264',
-        '-tune', 'stillimage',
-        '-c:a', 'aac',
-        '-b:a', '128k',
-        '-shortest',
-        '-pix_fmt', 'yuv420p',
-        '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
-        'output.mp4',
-      ])
-      const data = await ff.readFile('output.mp4')
-      const raw = data as Uint8Array
-      const videoFile = new File([raw.buffer as ArrayBuffer], 'Eid-Ala-Habaybek.mp4', { type: 'video/mp4' })
-      if (navigator.share && navigator.canShare?.({ files: [videoFile] })) {
-        await navigator.share({ title: 'عيد أضحى مبارك', files: [videoFile] })
-      } else {
-        const url = URL.createObjectURL(new Blob([raw.buffer as ArrayBuffer], { type: 'video/mp4' }))
-        const link = document.createElement('a')
-        link.download = 'Eid-Ala-Habaybek.mp4'
-        link.href = url
-        link.click()
-        URL.revokeObjectURL(url)
-      }
-    } catch {
-      const dataUrl = await toPng(cardRef.current!, {
-        quality: 1,
-        width: cardRef.current!.scrollWidth,
-        height: cardRef.current!.scrollHeight,
-      })
       const blob = await (await fetch(dataUrl)).blob()
       const file = new File([blob], 'Eid-Ala-Habaybek.png', { type: 'image/png' })
-      const shareText = 'كل عام وأنتم بخير\n\nتقبل الله منا ومنكم صالح الأعمال\n\nللاستماع إلى التكبيرات:\nhttps://archive.org/details/EidTakbirBySheikhAliMullah'
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ title: 'عيد أضحى مبارك', text: shareText, files: [file] })
+        await navigator.share({
+          title: 'عيد أضحى مبارك',
+          text: 'تقبل الله منا ومنكم صالح الأعمال',
+          files: [file],
+        })
       } else if (navigator.share) {
-        await navigator.share({ title: 'عيد أضحى مبارك', text: shareText })
+        await navigator.share({
+          title: 'عيد أضحى مبارك',
+          text: 'تقبل الله منا ومنكم صالح الأعمال',
+        })
       } else {
         const link = document.createElement('a')
         link.download = 'Eid-Ala-Habaybek.png'
         link.href = dataUrl
         link.click()
       }
+    } catch {
+      const link = document.createElement('a')
+      link.download = 'Eid-Ala-Habaybek.png'
+      link.href = await toPng(cardRef.current!, {
+        quality: 1,
+        width: cardRef.current!.scrollWidth,
+        height: cardRef.current!.scrollHeight,
+      })
+      link.click()
     } finally {
       setCreatingVideo(false)
     }
@@ -185,7 +163,7 @@ function App() {
             takbeerOn={takbeerOn}
             creatingVideo={creatingVideo}
             onToggleTakbeer={toggleTakbeer}
-            onShare={shareVideo}
+            onShare={shareCard}
             onDownload={downloadPNG}
             onEdit={() => setShowCard(false)}
           />
