@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useCallback } from 'react'
+import { useState, useRef, useMemo, useCallback, useEffect } from 'react'
 import { toPng } from 'dom-to-image-more'
 import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { toBlobURL } from '@ffmpeg/util'
@@ -59,6 +59,12 @@ function App() {
   const [style, setStyle] = useState('classic')
   const cardRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    document.body.className = Array.from(document.body.classList)
+      .filter(c => !c.startsWith('theme-')).join(' ')
+    document.body.classList.add(`theme-${theme}`)
+  }, [theme])
 
   const toggleTakbeer = useCallback(() => {
     if (!audioRef.current) {
@@ -184,7 +190,7 @@ function App() {
 
   if (!showCard) {
     return (
-      <>
+      <div className={`app-root theme-${theme}`}>
         <div className="stars">
           {stars.map((s) => (
             <div
@@ -206,7 +212,7 @@ function App() {
         <div className="lantern"><FiSun /></div>
         <div className="lantern"><FiSun /></div>
 
-        <div className={`container form-container theme-${theme}`}>
+        <div className="container form-container">
           <div className="sheep-logo"><GiSheep /></div>
           <h1 className="form-title">عيد فطر مبارك</h1>
           <p className="form-subtitle">اصنع بطاقة المعايدة الخاصة بك</p>
@@ -283,12 +289,12 @@ function App() {
             عيد على حبايبك
           </button>
         </div>
-      </>
+      </div>
     )
   }
 
   return (
-    <>
+    <div className={`app-root theme-${theme}`}>
       <div className="stars">
         {stars.map((s) => (
           <div
@@ -310,7 +316,7 @@ function App() {
       <div className="lantern"><FiSun /></div>
       <div className="lantern"><FiSun /></div>
 
-      <div className={`container card-container theme-${theme} style-${style}`} ref={cardRef}>
+      <div className={`container card-container style-${style}`} ref={cardRef}>
         <div className="border-ornament top-ornament">
           <span className="diamond">◆</span>
           <span className="ornament-line" />
@@ -403,7 +409,7 @@ function App() {
           <FiEdit3 /> تعديل
         </button>
       </div>
-    </>
+    </div>
   )
 }
 
