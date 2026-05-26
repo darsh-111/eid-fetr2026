@@ -76,47 +76,55 @@ function App() {
     const node = cardRef.current!
     const scale = 4
 
-    try {
-      const svgDataUrl = await domtoimage.toSvg(node, {
-        style: {
-          transform: `scale(${scale})`,
-          transformOrigin: 'top left',
-        },
-      })
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        if (attempt === 0) {
+          // Chromium: zoom scales layout + content perfectly
+          const svgUrl = await domtoimage.toSvg(node, { style: { zoom: String(scale) } } as any)
+          const img = await loadSvgImage(svgUrl)
+          const canvas = document.createElement('canvas')
+          canvas.width = img.naturalWidth
+          canvas.height = img.naturalHeight
+          canvas.getContext('2d')!.drawImage(img, 0, 0)
+          return new Promise((resolve, reject) => {
+            canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob null')), 'image/png')
+          })
+        }
 
-      const raw = decodeURIComponent(svgDataUrl.split(',')[1])
-      const scaled = raw
-        .replace(
-          /(<svg[^>]*?)(width|height)="(\d+)"/g,
-          (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
-        )
-        .replace(
-          /(<foreignObject[^>]*?)(width|height)="(\d+)"/g,
-          (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
-        )
-      const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(scaled)
+        // Fallback: scale SVG dimensions + add transform
+        const svg = await domtoimage.toSvg(node)
+        const raw = decodeURIComponent(svg.split(',')[1])
+        const scaled = raw
+          .replace(/(<svg[^>]*?)(width|height)="(\d+)"/g, (_, p, a, v) => `${p}${a}="${parseInt(v) * scale}"`)
+          .replace(/(<foreignObject[^>]*?)(width|height)="(\d+)"/g, (_, p, a, v) => `${p}${a}="${parseInt(v) * scale}"`)
+          .replace(/(\btransform\s*:\s*scale\s*\(\s*)\d+(\s*\))/g, `$1${scale}$2`)
 
-      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-        const img = new Image()
-        img.onload = () => resolve(img)
-        img.onerror = reject
-        img.src = dataUrl
-      })
-
-      const canvas = document.createElement('canvas')
-      canvas.width = img.naturalWidth
-      canvas.height = img.naturalHeight
-      const ctx = canvas.getContext('2d')!
-      ctx.drawImage(img, 0, 0)
-
-      const blob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob returned null')), 'image/png')
-      })
-      return blob
-    } catch (err) {
-      console.error('SVG capture failed, falling back to toPng', err)
-      return domtoimage.toBlob(node, { quality: 1, pixelRatio: 3 })
+        const img = await loadSvgImage(scaled)
+        const canvas = document.createElement('canvas')
+        canvas.width = img.naturalWidth
+        canvas.height = img.naturalHeight
+        canvas.getContext('2d')!.drawImage(img, 0, 0)
+        return new Promise((resolve, reject) => {
+          canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob null')), 'image/png')
+        })
+      } catch (e) {
+        if (attempt === 1) throw e
+      }
     }
+    return domtoimage.toBlob(node, { pixelRatio: 3 })
+  }
+
+  function loadSvgImage(source: string): Promise<HTMLImageElement> {
+    const isRaw = source.startsWith('<')
+    const text = isRaw ? source : decodeURIComponent(source.split(',')[1])
+    const blob = new Blob([text], { type: 'image/svg+xml;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => { URL.revokeObjectURL(url); resolve(img) }
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('SVG image load failed')) }
+      img.src = url
+    })
   }
 
   const downloadPNG = async () => {
