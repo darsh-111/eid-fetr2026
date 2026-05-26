@@ -75,10 +75,9 @@ function App() {
   async function captureBlob(): Promise<Blob> {
     const node = cardRef.current!
     const scale = 3
-    const svgTxt = await domtoimage.toSvg(node)
-    // Scale SVG viewport and wrap foreignObject in <g transform="scale(N)">
-    const scaled = svgTxt
-      .replace(/<svg\s/gi, '<svg ')
+    const svgDataUri = await domtoimage.toSvg(node)
+    const raw = decodeURIComponent(svgDataUri.split(',')[1])
+    const scaled = raw
       .replace(
         /(width|height)="([\d.]+)"/gi,
         (_, a, v) => `${a}="${parseFloat(v) * scale}"`
