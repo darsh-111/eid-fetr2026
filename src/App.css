@@ -484,6 +484,8 @@
   margin-bottom: 4px;
   position: relative;
   z-index: 1;
+  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 .moon {
