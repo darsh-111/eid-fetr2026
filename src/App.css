@@ -475,18 +475,6 @@
   margin-bottom: 12px;
 }
 
-/* === Top Eid Message === */
-.top-eid-message {
-  text-align: center;
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--title-color);
-  text-shadow: 0 0 20px rgba(var(--glow-primary-rgb), 0.4);
-  margin-bottom: 16px;
-  letter-spacing: 4px;
-  direction: rtl;
-}
-
 .bottom-ornament {
   display: flex;
   align-items: center;
