@@ -76,6 +76,7 @@ function App() {
     if (!cardRef.current) return
     const dataUrl = await toPng(cardRef.current, {
       quality: 1,
+      pixelRatio: 3,
       width: cardRef.current.scrollWidth,
       height: cardRef.current.scrollHeight,
     })
@@ -91,6 +92,7 @@ function App() {
     try {
       const dataUrl = await toPng(cardRef.current, {
         quality: 1,
+        pixelRatio: 3,
         width: cardRef.current.scrollWidth,
         height: cardRef.current.scrollHeight,
       })
@@ -118,6 +120,7 @@ function App() {
       link.download = 'Eid-Ala-Habaybek.png'
       link.href = await toPng(cardRef.current!, {
         quality: 1,
+        pixelRatio: 3,
         width: cardRef.current!.scrollWidth,
         height: cardRef.current!.scrollHeight,
       })
