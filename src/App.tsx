@@ -73,7 +73,37 @@ function App() {
   }
 
   async function captureBlob(): Promise<Blob> {
-    return domtoimage.toBlob(cardRef.current!, { pixelRatio: 3 })
+    const node = cardRef.current!
+    // Try high-quality SVG scaling (native 3x rendering via <g transform>)
+    try {
+      const svgDataUri = await Promise.race([
+        domtoimage.toSvg(node),
+        new Promise<string>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+      ])
+      const raw = decodeURIComponent(svgDataUri.split(',')[1])
+      const inner = raw.match(/<foreignObject[^>]*>([\s\S]*)<\/foreignObject>/i)?.[1] || raw
+      const w = parseFloat(raw.match(/width="([\d.]+)"/)?.[1] || '800')
+      const h = parseFloat(raw.match(/height="([\d.]+)"/)?.[1] || '600')
+      const scale = 3
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w * scale}" height="${h * scale}"><g transform="scale(${scale})"><foreignObject width="${w}" height="${h}">${inner}</foreignObject></g></svg>`
+      const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      return await new Promise<Blob>((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          canvas.width = img.naturalWidth
+          canvas.height = img.naturalHeight
+          canvas.getContext('2d')!.drawImage(img, 0, 0)
+          URL.revokeObjectURL(url)
+          canvas.toBlob(b => b ? resolve(b) : reject(), 'image/png')
+        }
+        img.onerror = () => { URL.revokeObjectURL(url); reject() }
+        img.src = url
+      })
+    } catch {
+      return domtoimage.toBlob(node, { pixelRatio: 3 })
+    }
   }
 
   const downloadPNG = async () => {
