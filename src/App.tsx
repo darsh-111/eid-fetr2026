@@ -8,18 +8,19 @@ import './App.css'
 
 const themes = [
   { id: 'gold', label: 'ذهبي', color: '#D4AF37' },
-  { id: 'emerald', label: 'زمردي', color: '#2ECC71' },
-  { id: 'ruby', label: 'ياقوتي', color: '#E74C3C' },
-  { id: 'indigo', label: 'نيلي', color: '#6C63FF' },
-  { id: 'rose', label: 'وردي', color: '#E91E63' },
-  { id: 'day', label: 'نهاري', color: '#F39C12' },
+  { id: 'emerald', label: 'زمردي', color: '#58D68D' },
+  { id: 'coral', label: 'مرجاني', color: '#FF7979' },
+  { id: 'lavender', label: 'لافاندي', color: '#A29BFE' },
+  { id: 'honey', label: 'عسلي', color: '#F6B93B' },
+  { id: 'mint', label: 'نعناعي', color: '#48C9B0' },
 ]
 
 const styles = [
   { id: 'classic', label: 'كلاسيك', icon: '◇' },
-  { id: 'luxury', label: 'فاخر', icon: '◆' },
+  { id: 'elegant', label: 'أنيق', icon: '◦' },
+  { id: 'luxury', label: 'فاخر', icon: '✦' },
   { id: 'minimal', label: 'بسيط', icon: '○' },
-  { id: 'ornate', label: 'مزخرف', icon: '✦' },
+  { id: 'moroccan', label: 'موريكي', icon: '⭒' },
 ]
 
 let ffmpegInstance: FFmpeg | null = null
