@@ -1,8 +1,10 @@
 :root {
   --gold: #D4AF37;
+  --gold-rgb: 212, 175, 55;
   --gold-light: #F5D742;
   --gold-dark: #B8860B;
   --amber: #E8A317;
+  --amber-rgb: 232, 163, 23;
   --bg-start: #0D0D2B;
   --bg-mid: #1A1040;
   --bg-end: #0F1F3D;
@@ -11,6 +13,7 @@
   --green: #1B7A3D;
   --green-light: #2ECC71;
   --green-dark: #0D5C2D;
+  --green-rgb: 46, 204, 113;
   --teal: #0D8B7A;
   --crescent: #F5F0E8;
   --sans: 'Readex Pro', 'Noto Naskh Arabic', 'Traditional Arabic', system-ui, sans-serif;
@@ -27,6 +30,192 @@
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* ========== Color Themes ========== */
+.theme-emerald {
+  --gold: #2ECC71;
+  --gold-rgb: 46, 204, 113;
+  --gold-light: #58D68D;
+  --gold-dark: #1A9C54;
+  --amber: #27AE60;
+  --amber-rgb: 39, 174, 96;
+  --bg-start: #0A1A0F;
+  --bg-mid: #0F2D1A;
+  --bg-end: #081F12;
+  --green: #2ECC71;
+  --green-light: #58D68D;
+  --green-dark: #1A9C54;
+  --green-rgb: 46, 204, 113;
+  --teal: #1ABC9C;
+  --text-gold: #58D68D;
+}
+.theme-ruby {
+  --gold: #E74C3C;
+  --gold-rgb: 231, 76, 60;
+  --gold-light: #FF6B6B;
+  --gold-dark: #C0392B;
+  --amber: #F39C12;
+  --amber-rgb: 243, 156, 18;
+  --bg-start: #1A0505;
+  --bg-mid: #2D0A0F;
+  --bg-end: #1A0815;
+  --green: #E67E22;
+  --green-light: #F39C12;
+  --green-dark: #D35400;
+  --green-rgb: 230, 126, 34;
+  --teal: #E74C3C;
+  --text-gold: #FF6B6B;
+}
+.theme-indigo {
+  --gold: #6C63FF;
+  --gold-rgb: 108, 99, 255;
+  --gold-light: #8B83FF;
+  --gold-dark: #4A42CC;
+  --amber: #9B59B6;
+  --amber-rgb: 155, 89, 182;
+  --bg-start: #08082A;
+  --bg-mid: #101040;
+  --bg-end: #080830;
+  --green: #6C63FF;
+  --green-light: #8B83FF;
+  --green-dark: #4A42CC;
+  --green-rgb: 108, 99, 255;
+  --teal: #9B59B6;
+  --text-gold: #8B83FF;
+}
+.theme-rose {
+  --gold: #E91E63;
+  --gold-rgb: 233, 30, 99;
+  --gold-light: #FF6B9D;
+  --gold-dark: #C2185B;
+  --amber: #FFB6C1;
+  --amber-rgb: 255, 182, 193;
+  --bg-start: #1A0510;
+  --bg-mid: #2D0A1A;
+  --bg-end: #1A0820;
+  --green: #E91E63;
+  --green-light: #FF6B9D;
+  --green-dark: #C2185B;
+  --green-rgb: 233, 30, 99;
+  --teal: #FFB6C1;
+  --text-gold: #FF6B9D;
+}
+.theme-day {
+  --gold: #F39C12;
+  --gold-rgb: 243, 156, 18;
+  --gold-light: #F1C40F;
+  --gold-dark: #D68910;
+  --amber: #E67E22;
+  --amber-rgb: 230, 126, 34;
+  --bg-start: #1A0F05;
+  --bg-mid: #2D1A0A;
+  --bg-end: #1A1208;
+  --green: #2ECC71;
+  --green-light: #58D68D;
+  --green-dark: #1A9C54;
+  --green-rgb: 46, 204, 113;
+  --teal: #1ABC9C;
+  --text-gold: #F1C40F;
+}
+
+/* ========== Card Styles ========== */
+.style-luxury .container::before {
+  background: linear-gradient(135deg,
+    rgba(var(--gold-rgb), 0.25),
+    rgba(var(--gold-rgb), 0.1) 30%,
+    transparent 50%,
+    rgba(var(--amber-rgb), 0.15) 80%,
+    rgba(var(--gold-rgb), 0.25)
+  ) !important;
+  border-width: 2px;
+}
+.style-luxury .container {
+  border-width: 2px;
+}
+.style-luxury .border-ornament {
+  gap: 16px;
+}
+.style-luxury .diamond {
+  font-size: 14px;
+  opacity: 0.7;
+}
+.style-luxury .ornament-line {
+  width: 60px;
+  height: 2px;
+}
+.style-luxury .user-photo img {
+  border-width: 4px;
+  border-radius: 50%;
+}
+.style-luxury .dua {
+  border-width: 2px;
+}
+
+.style-minimal .border-ornament,
+.style-minimal .decorative-line,
+.style-minimal .bottom-ornament {
+  display: none;
+}
+.style-minimal .container {
+  background: linear-gradient(145deg,
+    rgba(13, 13, 43, 0.95) 0%,
+    rgba(26, 16, 64, 0.9) 100%
+  );
+  border-radius: 16px;
+}
+.style-minimal .title-line.accent {
+  font-size: 44px;
+}
+.style-minimal .user-photo img {
+  border-radius: 50%;
+  border-width: 3px;
+}
+
+.style-ornate .container {
+  border-width: 2px;
+  border-radius: 16px;
+}
+.style-ornate .container::before {
+  border-radius: 18px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(var(--gold-rgb), 0.04) 10px,
+    rgba(var(--gold-rgb), 0.04) 11px
+  );
+}
+.style-ornate .border-ornament {
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.style-ornate .diamond {
+  font-size: 12px;
+  opacity: 0.6;
+  animation: sparkle 2s ease-in-out infinite;
+}
+.style-ornate .ornament-line {
+  width: 50px;
+}
+.style-ornate .dot {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.style-ornate .decorative-line .line {
+  width: 100px;
+}
+.style-ornate .dua {
+  border-radius: 24px;
+  padding: 28px 24px;
+  border-width: 2px;
+}
+.style-ornate .user-photo img {
+  border-radius: 24px;
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
 }
 
 * {

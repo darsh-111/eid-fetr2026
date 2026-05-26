@@ -6,6 +6,22 @@ import { GiSheep } from 'react-icons/gi'
 import { FiSun, FiMoon, FiDownload, FiEdit3, FiSend, FiVolume2, FiVolumeX } from 'react-icons/fi'
 import './App.css'
 
+const themes = [
+  { id: 'gold', label: 'ذهبي', color: '#D4AF37' },
+  { id: 'emerald', label: 'زمردي', color: '#2ECC71' },
+  { id: 'ruby', label: 'ياقوتي', color: '#E74C3C' },
+  { id: 'indigo', label: 'نيلي', color: '#6C63FF' },
+  { id: 'rose', label: 'وردي', color: '#E91E63' },
+  { id: 'day', label: 'نهاري', color: '#F39C12' },
+]
+
+const styles = [
+  { id: 'classic', label: 'كلاسيك', icon: '◇' },
+  { id: 'luxury', label: 'فاخر', icon: '◆' },
+  { id: 'minimal', label: 'بسيط', icon: '○' },
+  { id: 'ornate', label: 'مزخرف', icon: '✦' },
+]
+
 let ffmpegInstance: FFmpeg | null = null
 let ffmpegReady = false
 
@@ -38,6 +54,8 @@ function App() {
   const [showCard, setShowCard] = useState(false)
   const [takbeerOn, setTakbeerOn] = useState(false)
   const [creatingVideo, setCreatingVideo] = useState(false)
+  const [theme, setTheme] = useState('gold')
+  const [style, setStyle] = useState('classic')
   const cardRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
@@ -187,7 +205,7 @@ function App() {
         <div className="lantern"><FiSun /></div>
         <div className="lantern"><FiSun /></div>
 
-        <div className="container form-container">
+        <div className={`container form-container theme-${theme}`}>
           <div className="sheep-logo"><GiSheep /></div>
           <h1 className="form-title">عيد فطر مبارك</h1>
           <p className="form-subtitle">اصنع بطاقة المعايدة الخاصة بك</p>
@@ -225,6 +243,37 @@ function App() {
             )}
           </div>
 
+          <div className="customize-section">
+            <label>اللون</label>
+            <div className="theme-picker">
+              {themes.map((t) => (
+                <button
+                  key={t.id}
+                  className={`theme-swatch ${theme === t.id ? 'active' : ''}`}
+                  style={{ '--swatch': t.color } as React.CSSProperties}
+                  onClick={() => setTheme(t.id)}
+                  title={t.label}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="customize-section">
+            <label>التصميم</label>
+            <div className="style-picker">
+              {styles.map((s) => (
+                <button
+                  key={s.id}
+                  className={`style-option ${style === s.id ? 'active' : ''}`}
+                  onClick={() => setStyle(s.id)}
+                >
+                  <span className="style-icon">{s.icon}</span>
+                  <span className="style-label">{s.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <button
             className="generate-btn"
             onClick={generateCard}
@@ -260,7 +309,7 @@ function App() {
       <div className="lantern"><FiSun /></div>
       <div className="lantern"><FiSun /></div>
 
-      <div className="container card-container" ref={cardRef}>
+      <div className={`container card-container theme-${theme} style-${style}`} ref={cardRef}>
         <div className="border-ornament top-ornament">
           <span className="diamond">◆</span>
           <span className="ornament-line" />
