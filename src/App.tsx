@@ -73,12 +73,28 @@ function App() {
   }
 
   async function captureBlob(): Promise<Blob> {
-    const canvas = await domtoimage.toCanvas(cardRef.current!, {
-      quality: 1,
-      pixelRatio: 5,
-      width: cardRef.current!.scrollWidth,
-      height: cardRef.current!.scrollHeight,
+    const node = cardRef.current!
+    const scale = 4
+
+    const svgDataUrl = await domtoimage.toSvg(node)
+
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = reject
+      img.src = svgDataUrl
     })
+
+    const w = img.naturalWidth
+    const h = img.naturalHeight
+    const canvas = document.createElement('canvas')
+    canvas.width = w * scale
+    canvas.height = h * scale
+    const ctx = canvas.getContext('2d')!
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
     return new Promise<Blob>(r => canvas.toBlob(b => r(b!), 'image/png'))
   }
 
