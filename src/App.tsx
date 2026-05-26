@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { toPng } from 'dom-to-image-more'
+import domtoimage from 'dom-to-image-more'
 import { themes } from './constants'
 import StarsBackground from './components/StarsBackground'
 import SetupForm from './components/SetupForm'
@@ -72,31 +72,32 @@ function App() {
       .catch(() => {})
   }
 
+  async function captureBlob(): Promise<Blob> {
+    const canvas = await domtoimage.toCanvas(cardRef.current!, {
+      quality: 1,
+      pixelRatio: 5,
+      width: cardRef.current!.scrollWidth,
+      height: cardRef.current!.scrollHeight,
+    })
+    return new Promise<Blob>(r => canvas.toBlob(b => r(b!), 'image/png'))
+  }
+
   const downloadPNG = async () => {
     if (!cardRef.current) return
-    const dataUrl = await toPng(cardRef.current, {
-      quality: 1,
-      pixelRatio: 3,
-      width: cardRef.current.scrollWidth,
-      height: cardRef.current.scrollHeight,
-    })
+    const blob = await captureBlob()
+    const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.download = 'Eid-Ala-Habaybek.png'
-    link.href = dataUrl
+    link.href = url
     link.click()
+    URL.revokeObjectURL(url)
   }
 
   const shareCard = async () => {
     if (!cardRef.current) return
     setCreatingVideo(true)
     try {
-      const dataUrl = await toPng(cardRef.current, {
-        quality: 1,
-        pixelRatio: 3,
-        width: cardRef.current.scrollWidth,
-        height: cardRef.current.scrollHeight,
-      })
-      const blob = await (await fetch(dataUrl)).blob()
+      const blob = await captureBlob()
       const file = new File([blob], 'Eid-Ala-Habaybek.png', { type: 'image/png' })
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({
@@ -110,21 +111,21 @@ function App() {
           text: 'تقبل الله منا ومنكم صالح الأعمال',
         })
       } else {
+        const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.download = 'Eid-Ala-Habaybek.png'
-        link.href = dataUrl
+        link.href = url
         link.click()
+        URL.revokeObjectURL(url)
       }
     } catch {
+      const blob = await captureBlob()
+      const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.download = 'Eid-Ala-Habaybek.png'
-      link.href = await toPng(cardRef.current!, {
-        quality: 1,
-        pixelRatio: 3,
-        width: cardRef.current!.scrollWidth,
-        height: cardRef.current!.scrollHeight,
-      })
+      link.href = url
       link.click()
+      URL.revokeObjectURL(url)
     } finally {
       setCreatingVideo(false)
     }

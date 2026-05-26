@@ -367,7 +367,7 @@
 
 .user-name {
   font-family: var(--title);
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 700;
   color: var(--gold-light);
   text-shadow: 0 0 20px rgba(240, 208, 96, 0.25);
@@ -405,7 +405,7 @@
 
 .title-line.accent {
   font-family: var(--title);
-  font-size: 52px;
+  font-size: 58px;
   font-weight: 700;
   color: var(--gold);
   text-shadow:
@@ -444,7 +444,7 @@
 
 .blessing {
   font-family: var(--decorative);
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 600;
   line-height: 2.4;
   color: var(--text-light);
@@ -466,7 +466,7 @@
 
 .dua p {
   font-family: var(--decorative);
-  font-size: 19px;
+  font-size: 22px;
   color: rgba(var(--gold-rgb), 0.7);
   line-height: 2.2;
 }
@@ -487,7 +487,7 @@
 }
 
 .moon {
-  font-size: 24px;
+  font-size: 28px;
   opacity: 0.7;
   display: inline-flex;
   color: var(--gold-light);
@@ -500,7 +500,7 @@
 
 .ornament-text {
   font-family: var(--title);
-  font-size: 22px;
+  font-size: 28px;
   color: var(--gold-light);
   letter-spacing: 8px;
   font-weight: 700;
@@ -669,15 +669,15 @@
   }
 
   .title-line.accent {
-    font-size: 28px;
+    font-size: 34px;
   }
 
   .takbeer {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .blessing {
-    font-size: 17px;
+    font-size: 20px;
   }
 
   .dua {
@@ -685,11 +685,11 @@
   }
 
   .dua p {
-    font-size: 15px;
+    font-size: 17px;
   }
 
   .user-name {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .user-photo img {
@@ -698,12 +698,12 @@
   }
 
   .ornament-text {
-    font-size: 18px;
+    font-size: 22px;
     letter-spacing: 4px;
   }
 
   .moon {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .bottom-ornament {
@@ -754,16 +754,16 @@
   }
 
   .title-line.accent {
-    font-size: 22px;
+    font-size: 28px;
   }
 
   .takbeer {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 2.2;
   }
 
   .blessing {
-    font-size: 15px;
+    font-size: 17px;
     line-height: 2;
   }
 
@@ -772,11 +772,11 @@
   }
 
   .dua p {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .user-name {
-    font-size: 17px;
+    font-size: 20px;
   }
 
   .user-photo img {
@@ -785,12 +785,12 @@
   }
 
   .ornament-text {
-    font-size: 15px;
+    font-size: 18px;
     letter-spacing: 3px;
   }
 
   .moon {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .bottom-ornament {
