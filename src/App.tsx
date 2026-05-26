@@ -76,24 +76,37 @@ function App() {
     const node = cardRef.current!
     const scale = 4
 
-    const svgDataUrl = await domtoimage.toSvg(node)
+    const svgDataUrl = await domtoimage.toSvg(node, {
+      style: {
+        transform: `scale(${scale})`,
+        transformOrigin: 'top left',
+      },
+    })
+
+    const raw = decodeURIComponent(svgDataUrl.split(',')[1])
+    const scaled = raw
+      .replace(
+        /(<svg[^>]*?)(width|height)="(\d+)"/g,
+        (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
+      )
+      .replace(
+        /(<foreignObject[^>]*?)(width|height)="(\d+)"/g,
+        (_, pre, attr, val) => `${pre}${attr}="${parseInt(val) * scale}"`,
+      )
+    const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(scaled)
 
     const img = await new Promise<HTMLImageElement>((resolve, reject) => {
       const img = new Image()
       img.onload = () => resolve(img)
       img.onerror = reject
-      img.src = svgDataUrl
+      img.src = dataUrl
     })
 
-    const w = img.naturalWidth
-    const h = img.naturalHeight
     const canvas = document.createElement('canvas')
-    canvas.width = w * scale
-    canvas.height = h * scale
+    canvas.width = img.naturalWidth
+    canvas.height = img.naturalHeight
     const ctx = canvas.getContext('2d')!
-    ctx.imageSmoothingEnabled = true
-    ctx.imageSmoothingQuality = 'high'
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+    ctx.drawImage(img, 0, 0)
 
     return new Promise<Blob>(r => canvas.toBlob(b => r(b!), 'image/png'))
   }
